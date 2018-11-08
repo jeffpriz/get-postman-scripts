@@ -21,10 +21,6 @@
             "path": "GetPostmanData"
         },
         {
-            "path": "images/postman_icon.png",
-            "addressable": true
-        },
-        {
             "path": "images/postman_icon_small.png",
             "addressable": true
         },

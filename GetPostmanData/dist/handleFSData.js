@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var gfs = require("graceful-fs");
+var tl = require("azure-pipelines-task-lib");
 function OpenFile(filename) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var completeSuccess, filecontent;
@@ -38,10 +39,13 @@ function SaveFile(filename, jsonData) {
                                 _a.label = 1;
                             case 1:
                                 _a.trys.push([1, 3, , 4]);
+                                tl.debug("attempting to save file " + filename);
+                                tl.debug("file data:");
+                                tl.debug(jsonData);
                                 return [4 /*yield*/, gfs.writeFile(filename, jsonData, function (err) {
                                         if (err)
                                             throw err;
-                                        console.log('Saved!');
+                                        tl.debug('file ' + filename + ' Saved!');
                                         success = true;
                                         resolve(success);
                                     })];

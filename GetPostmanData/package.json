@@ -28,9 +28,9 @@
     "config/"
   ],
   "dependencies": {
-    "vsts-task-lib": "^2.0.7",
+    "azure-pipelines-task-lib": "2.7.0",
     "reflect-metadata": "^0.1.10",
-    "tslib": "^1.7.1",
+    "tslib": "~1.9.3",
     "node-fetch": "2.0.0",
     "graceful-fs": "^4.1.11",
     "parse-json": "^4.0.0",

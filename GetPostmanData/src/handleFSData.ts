@@ -1,5 +1,5 @@
 import * as gfs from 'graceful-fs';
-import * as tl from 'vsts-task-lib';
+import * as tl from 'azure-pipelines-task-lib';
 
 export async function OpenFile(filename:string):Promise<string>
 {

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var tl = require("vsts-task-lib");
+var tl = require("azure-pipelines-task-lib");
 var FSData = require("./handleFSData");
 var httprequest = require("request-promise-native");
 function callPostman(apiEndpoint, headerApiKey) {
@@ -9,7 +9,7 @@ function callPostman(apiEndpoint, headerApiKey) {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
             return [2 /*return*/, new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-                    var reqOption, s, result, e_1;
+                    var reqOption, result, e_1;
                     return tslib_1.__generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
@@ -25,21 +25,19 @@ function callPostman(apiEndpoint, headerApiKey) {
                                     json: true
                                 };
                                 tl.debug("Options passed to request: " + JSON.stringify(reqOption));
-                                s = 0;
                                 _a.label = 1;
                             case 1:
                                 _a.trys.push([1, 3, , 4]);
+                                tl.debug("calling " + apiEndpoint);
                                 return [4 /*yield*/, httprequest(reqOption)];
                             case 2:
                                 result = _a.sent();
                                 tl.debug("Result status: " + result.statusCode);
-                                s = result.statusCode;
                                 resolve(result);
                                 return [3 /*break*/, 4];
                             case 3:
                                 e_1 = _a.sent();
                                 tl.debug("error calling Postman: " + e_1.toString());
-                                console.log("error calling Postman: " + e_1.toString());
                                 reject(e_1);
                                 return [3 /*break*/, 4];
                             case 4: return [2 /*return*/];
@@ -65,7 +63,8 @@ function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSa
                             case 1:
                                 if (!!_c.done) return [3 /*break*/, 7];
                                 thisCollection = _c.value;
-                                console.log(thisCollection.name + " - " + thisCollection.id.toString());
+                                tl.debug("attempting to call Postman API for collection..");
+                                tl.debug(thisCollection.name + " - " + thisCollection.uid.toString());
                                 _d.label = 2;
                             case 2:
                                 _d.trys.push([2, 5, , 6]);
@@ -79,8 +78,8 @@ function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSa
                                 return [3 /*break*/, 6];
                             case 5:
                                 ex_1 = _d.sent();
-                                console.log("Error attempting to retrieve and/or save json for collection");
-                                console.log(ex_1.toString());
+                                tl.debug("Error attempting to retrieve and/or save json for collection");
+                                tl.debug(ex_1.toString());
                                 reject(ex_1);
                                 return [3 /*break*/, 6];
                             case 6:
@@ -116,7 +115,7 @@ function RunPostmanCollectionGet(apiEndpoint, headerApiKey, fileSaveLocation) {
                             case 0: return [4 /*yield*/, callPostman(apiEndpoint, headerApiKey)];
                             case 1:
                                 collections = _a.sent();
-                                console.log("There were " + collections.collections.length.toString() + " collections found in Postman");
+                                tl.debug("There were " + collections.collections.length.toString() + " collections found in Postman");
                                 return [4 /*yield*/, FSData.SaveFile(fileSaveLocation + "collectionlist.json", JSON.stringify(collections))];
                             case 2:
                                 if (!_a.sent()) return [3 /*break*/, 4];
