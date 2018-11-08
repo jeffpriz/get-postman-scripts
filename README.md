@@ -5,13 +5,24 @@ Utilizing this task you can leverage your Postman Enterprise account to manage y
 
 [![Build status](https://oneluckidev.visualstudio.com/OneLuckiDev/_apis/build/status/get-postman-task)](https://oneluckidev.visualstudio.com/OneLuckiDev/_build/latest?definitionId=19)
 
+
+## Azure Dev Ops YAML
+steps: --
+
+` steps: `
+`- task: oneLuckiGetPostmanScripts@0`
+  `displayName: 'Get Postman Script'`
+  `inputs:`
+  `fileLocation: '$(Build.ArtifactStagingDirectory)\folder'`
+  `apiKey: ' -- your api cred key here --'`
+
 ## Functionality
 This task will pull your Postman scripts from your Postman enterprise account.  You will need to provide the api credentials Token for the task to validate with Postman
 
 
 ## Input Value usage
 **Script Output location**
- The Path where the retrieved JSON files should be stored.  If you want to begin managing those scripts in 
+ The Path where the retrieved JSON files should be stored.  If you want to begin managing those scripts in Git for better history tracking than what Postman provides, you can set the output to be your sources folder and then utilize a Git task to push these changes to your Git repo.
 
 
 **Postman credential api key**
