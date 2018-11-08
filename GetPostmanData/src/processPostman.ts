@@ -45,8 +45,8 @@ export async function ProcessAllCollections(collectionList:any, apiEndpoint:stri
     return new Promise<boolean>(async (resolve, reject) => { 
         for (let thisCollection of collectionList.collections) 
         {
-            tl.debug("attempting to call Postman API for collection..");
-            tl.debug(thisCollection.name + " - " + thisCollection.uid.toString()) ;
+            console.log("attempting to call Postman API for collection..");
+            console.log(thisCollection.name + " - " + thisCollection.uid.toString()) ;
             try {
             var thisCollectionJSON = await callPostman(apiEndpoint + thisCollection.uid.toString(), headerApiKey);
             

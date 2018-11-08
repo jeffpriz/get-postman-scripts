@@ -28,11 +28,11 @@ export async function SaveFile(filename:string, jsonData:any):Promise<boolean>
         {
             tl.debug("attempting to save file " + filename);
             tl.debug("file data:")
-            tl.debug(jsonData);
+            
             await gfs.writeFile(filename, jsonData,  function (err) {
             if (err) throw err;
 
-            tl.debug('file ' + filename  + ' Saved!');
+           console.log('file ' + filename  + ' Saved!');
             success = true;
             resolve(success);
             });

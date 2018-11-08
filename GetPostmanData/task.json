@@ -30,7 +30,8 @@
             "type": "string",
             "label": "Script Output location",
             "required": true,
-            "helpMarkDown": "The file location to store the JSON Postman Script."
+            "helpMarkDown": "The file location to store the JSON Postman Script.",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)"
         },
 
         {
@@ -39,7 +40,7 @@
             "label": "Postman credential api key",
             "required": true,            
             "helpMarkDown": "The API credential key used to perform the call to Postman.",
-            "defaultValue": "json"
+            "defaultValue": ""
         }
     ],
     "execution": {

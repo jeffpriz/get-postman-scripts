@@ -41,11 +41,10 @@ function SaveFile(filename, jsonData) {
                                 _a.trys.push([1, 3, , 4]);
                                 tl.debug("attempting to save file " + filename);
                                 tl.debug("file data:");
-                                tl.debug(jsonData);
                                 return [4 /*yield*/, gfs.writeFile(filename, jsonData, function (err) {
                                         if (err)
                                             throw err;
-                                        tl.debug('file ' + filename + ' Saved!');
+                                        console.log('file ' + filename + ' Saved!');
                                         success = true;
                                         resolve(success);
                                     })];

@@ -63,8 +63,8 @@ function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSa
                             case 1:
                                 if (!!_c.done) return [3 /*break*/, 7];
                                 thisCollection = _c.value;
-                                tl.debug("attempting to call Postman API for collection..");
-                                tl.debug(thisCollection.name + " - " + thisCollection.uid.toString());
+                                console.log("attempting to call Postman API for collection..");
+                                console.log(thisCollection.name + " - " + thisCollection.uid.toString());
                                 _d.label = 2;
                             case 2:
                                 _d.trys.push([2, 5, , 6]);
