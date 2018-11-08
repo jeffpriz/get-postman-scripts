@@ -27,6 +27,9 @@ function validateInputs() {
     //Variable Prefix
     try {
         fileSaveLocation = tl.getInput('fileLocation', true);
+        if (!(fileSaveLocation.endsWith("\\") || fileSaveLocation.endsWith("/"))) {
+            fileSaveLocation = fileSaveLocation + "\\";
+        }
     }
     catch (ex) {
         validInputs = false;
