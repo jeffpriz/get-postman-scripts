@@ -1,0 +1,62 @@
+{
+    "manifestVersion": 1,
+    "id": "getPostmanJSON",
+    "name": "Get Postman Scripts",
+    "version": "1.0.1",
+    "publisher": "OneLuckiDev",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "icons": {
+        "default": "images/postman_icon_small.png"
+    },
+    "description": "Download your Postman scripts from your Postman enterprise account.",
+    "categories": [
+        "Build and release"
+    ],
+    "files": [
+        {
+            "path": "GetPostmanData"
+        },
+        {
+            "path": "images/postman_icon.png",
+            "addressable": true
+        },
+        {
+            "path": "images/postman_icon_small.png",
+            "addressable": true
+        },
+        {
+            "path": "images/taskOutput.PNG",
+            "addressable": true
+        },
+        {
+            "path": "images/taskSetup.PNG",
+            "addressable": true
+        }
+    ],
+    "contributions": [
+        {
+            "id": "vsts-release-web-test",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "GetPostmanScripts"
+            }
+        }
+    ],
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/jeffpriz/get-postman-scripts"
+    },
+    "public": true
+}
