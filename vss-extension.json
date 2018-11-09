@@ -14,7 +14,7 @@
     },
     "description": "Download your Postman scripts from your Postman enterprise account.",
     "categories": [
-        "Build and release"
+        "Azure Pipelines"
     ],
     "files": [
         {
@@ -33,6 +33,17 @@
             "addressable": true
         }
     ],
+    "badges": [
+        {
+            "href": "https://oneluckidev.visualstudio.com/OneLuckiDev/_apis/build/status/get-postman-task",
+            "uri": "https://oneluckidev.visualstudio.com/OneLuckiDev/_apis/build/status/get-postman-task",
+            "description": "Build for this Task run in Azure DevOps"
+        }
+    ],
+    "branding": {
+        "color": "rgb(120, 113, 136)",
+        "theme": "dark"
+    },
     "contributions": [
         {
             "id": "vsts-release-web-test",
