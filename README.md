@@ -32,14 +32,14 @@ Your Postman API credentials Token
      
 
 ## Images
-![json text](images/jsontext.png)
+
 ![task output](images/taskOutput.PNG)
 
 ## Source
-[GitHub](https://github.com/jeffpriz/vsts-json-to-variable)
+[GitHub](https://github.com/jeffpriz/get-postman-scripts)
 
 ## Issues
-[File an issue](https://github.com/jeffpriz/vsts-json-to-variable/issues)
+[File an issue](https://github.com/jeffpriz/get-postman-scripts/issues)
 
 ## Credits
 [Jeff Przylucki](http://www.oneluckidev.com)
