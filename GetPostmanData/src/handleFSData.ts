@@ -1,6 +1,7 @@
 import * as gfs from 'graceful-fs';
 import * as tl from 'azure-pipelines-task-lib';
 import { EEXIST } from 'constants';
+import { resolveSrv } from 'dns';
 
 export async function OpenFile(filename:string):Promise<string>
 {
@@ -54,15 +55,21 @@ export async function MakeDirectory(dirname:string):Promise<boolean>
         {
          
             await gfs.mkdir(dirname, function(err){
-                if(err.code != "EEXIST")
+                if(err != null)
                 {
-                    console.log(err);
-                    reject(err);
+                    if(err.code != "EEXIST")
+                    {
+                        console.log(err);
+                        reject(err);
+                    }
+                    else{
+                        console.log("directory created or available");
+                    }
+                    resolve(success);
                 }
                 else{
-                    console.log("directory created or available");
+                    resolve(success);
                 }
-                resolve(success);
             });
             
         }
