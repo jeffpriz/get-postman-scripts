@@ -69,15 +69,89 @@ export async function ProcessAllCollections(collectionList:any, apiEndpoint:stri
 export async function RunPostmanCollectionGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
 {
     return new Promise<boolean>(async (resolve, reject) => { 
-        var collections:any = await callPostman(apiEndpoint, headerApiKey);
-        tl.debug("There were " + collections.collections.length.toString() + " collections found in Postman");
-        if (await FSData.SaveFile( fileSaveLocation +"collectionlist.json", JSON.stringify(collections)))
+        try
         {
-            await ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation);
+            var collections:any = await callPostman(apiEndpoint, headerApiKey);
+            tl.debug("There were " + collections.collections.length.toString() + " collections found in Postman");
+            if (await FSData.SaveFile( fileSaveLocation +"collectionlist.json", JSON.stringify(collections)))
+            {
+                await ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation);
+            }
+            else
+            {
+                tl.error("The Save File of the collection list failed...?");
+            }
+            resolve(true);
+
         }
-        else
+        catch(ex)
         {
-            tl.error("The Save File of the collection list failed...?");
+            reject(ex);
+        }
+    
+        
+    });
+}
+
+
+
+
+export async function RunPostmanEnvironmentGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+{
+    return new Promise<boolean>(async (resolve, reject) => { 
+        try 
+        {
+            var environments:any = await callPostman(apiEndpoint, headerApiKey);
+        // tl.debug("There were " + environments.collections.length.toString() + " collections found in Postman");
+            
+            try
+            {   await FSData.MakeDirectory(fileSaveLocation);
+            }
+            catch(ex)
+            {
+                console.log("if folder could not be created, then the save of environments will not proceed");
+            }
+            if (await FSData.SaveFile( fileSaveLocation +"environments.json", JSON.stringify(environments)))
+            {
+                
+              await ProcessAllEnvironments(environments, apiEndpoint, headerApiKey, fileSaveLocation);
+            }
+            else
+            {
+                tl.error("The Save File of the collection list failed...?");
+            }
+            resolve(true);
+        }
+        catch(ex)
+        {
+            reject(ex);
         }
     });
+}
+
+
+export async function ProcessAllEnvironments(environmentList:any, apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+{
+    return new Promise<boolean>(async (resolve, reject) => { 
+        for (let thisEnvironment of environmentList.environments) 
+        {
+            console.log("attempting to call Postman API for environment..");
+            console.log(thisEnvironment.name + " - " + thisEnvironment.uid.toString()) ;
+            try {
+            var thisEnvironmentJSON = await callPostman(apiEndpoint + thisEnvironment.uid.toString(), headerApiKey);
+            
+            await FSData.SaveFile( fileSaveLocation + thisEnvironment.name + ".json", JSON.stringify(thisEnvironmentJSON));
+            resolve(true);
+            }
+            catch(ex)
+            {
+                tl.debug("Error attempting to retrieve and/or save json for collection");
+                tl.debug(ex.toString());
+                reject(ex);
+
+                
+            }
+        }
+    });
+
 }

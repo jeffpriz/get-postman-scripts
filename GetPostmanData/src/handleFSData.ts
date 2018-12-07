@@ -1,5 +1,6 @@
 import * as gfs from 'graceful-fs';
 import * as tl from 'azure-pipelines-task-lib';
+import { EEXIST } from 'constants';
 
 export async function OpenFile(filename:string):Promise<string>
 {
@@ -36,6 +37,34 @@ export async function SaveFile(filename:string, jsonData:any):Promise<boolean>
             success = true;
             resolve(success);
             });
+        }
+        catch(e)
+        {
+            reject(e);
+        }
+
+    });
+}
+
+export async function MakeDirectory(dirname:string):Promise<boolean>
+{
+    return new Promise<boolean>(async(resolve, reject) => {
+        var success:boolean = false;
+        try
+        {
+         
+            await gfs.mkdir(dirname, function(err){
+                if(err.code != "EEXIST")
+                {
+                    console.log(err);
+                    reject(err);
+                }
+                else{
+                    console.log("directory created or available");
+                }
+                resolve(success);
+            });
+            
         }
         catch(e)
         {
