@@ -8,7 +8,10 @@ var input_variablePrefix:string="";
 var input_shouldPrefixVariables:boolean;
 
 var postman_collection_url:string = "https://api.getpostman.com/collections/";
-var postman_header_apiKey:string = "253485c02dcf4b7ab628af0e9f6e337e";
+var postman_environment_url:string = "https://api.getpostman.com/environments/"
+var postman_header_apiKey:string = "";
+var get_environments:boolean = false;
+var environment_folder:string="";
 var fileSaveLocation:string = "";
 //=----------------------------------------------------------
 //=  Validate that the inputs were provided as expected
@@ -47,6 +50,35 @@ function validateInputs()
         
     }
 
+    
+    try
+    {
+        get_environments = tl.getBoolInput('downloadEnvironments', true);
+
+    }
+    catch(ex)
+    {
+        validInputs = true;
+        get_environments = false;
+        tl.warning("There was an error setting the value of the get environments boolean, defaulting to false");
+        
+    }
+    
+    try
+    {
+        environment_folder = tl.getInput('environmentFolder', true);
+        if(!(environment_folder.endsWith("\\") || environment_folder.endsWith("/")))
+        {
+            environment_folder = environment_folder + "\\";
+        }
+    }
+    catch(ex)
+    {
+        validInputs = false;
+        tl.error("There was an error setting the value of the environment folder input");
+        
+    }
+
 }
 
 
@@ -66,6 +98,10 @@ async function Run()
         {
             
             var success:boolean = await processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation);            
+            if(get_environments)
+            {
+                success = await processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder);
+            }
         }
         else
         {

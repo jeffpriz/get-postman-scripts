@@ -3,11 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var processPostman = require("./processPostman");
 var postman_collection_url = "https://api.getpostman.com/collections/";
-var postman_header_apiKey = "<insert key here>";
+var postman_header_apiKey = "253485c02dcf4b7ab628af0e9f6e337e";
+var postman_environment_url = "https://api.getpostman.com/environments/";
 var input_fileName = "testJsonData.json";
 function Run() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var validInputs, fileContent, fileSaveLocation, success, err_1;
+        var validInputs, fileContent, fileSaveLocation, environment_folder, success, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -16,17 +17,21 @@ function Run() {
                     fileContent = "";
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([1, 4, , 5]);
                     fileSaveLocation = "c:\\temp\\";
+                    environment_folder = "environments\\";
                     return [4 /*yield*/, processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation)];
                 case 2:
                     success = _a.sent();
-                    return [3 /*break*/, 4];
+                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder)];
                 case 3:
+                    success = _a.sent();
+                    return [3 /*break*/, 5];
+                case 4:
                     err_1 = _a.sent();
                     console.log(err_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });

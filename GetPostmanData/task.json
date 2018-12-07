@@ -12,8 +12,8 @@
     "demands": [],
     "version": {
       "Major": "0",
-      "Minor": "1", 
-      "Patch": "1"
+      "Minor": "2", 
+      "Patch": "0"
     },
     "minimumAgentVersion": "1.95.0",
     "instanceNameFormat": "Get Postman Script",
@@ -41,6 +41,26 @@
             "required": true,            
             "helpMarkDown": "The API credential key used to perform the call to Postman.",
             "defaultValue": ""
+        },
+        
+        {
+            "name": "downloadEnvironments",
+            "type": "boolean",
+            "label": "Download Environment",
+            "required": true,            
+            "helpMarkDown": "Indicates if the task should pull down Environment Variable definitions also.",
+            "defaultValue": "true"
+        },
+        
+        {
+            "name": "environmentFolder",
+            "type": "string",
+            "label": "Environment File folder name (relative to Script Output Location)",
+            "required": true, 
+            "defaultValue":"environments",
+            "visibleRule":"downloadEnvironments==true",      
+            "helpMarkDown": "Folder path where the Environment files should be saved (relative to the root where files are downloaded)."
+            
         }
     ],
     "execution": {

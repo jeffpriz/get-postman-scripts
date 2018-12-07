@@ -8,7 +8,10 @@ var input_fileName = "";
 var input_variablePrefix = "";
 var input_shouldPrefixVariables;
 var postman_collection_url = "https://api.getpostman.com/collections/";
-var postman_header_apiKey = "253485c02dcf4b7ab628af0e9f6e337e";
+var postman_environment_url = "https://api.getpostman.com/environments/";
+var postman_header_apiKey = "";
+var get_environments = false;
+var environment_folder = "";
 var fileSaveLocation = "";
 //=----------------------------------------------------------
 //=  Validate that the inputs were provided as expected
@@ -35,6 +38,24 @@ function validateInputs() {
         validInputs = false;
         tl.error("There was an error setting the value of the fileLocation input");
     }
+    try {
+        get_environments = tl.getBoolInput('downloadEnvironments', true);
+    }
+    catch (ex) {
+        validInputs = true;
+        get_environments = false;
+        tl.warning("There was an error setting the value of the get environments boolean, defaulting to false");
+    }
+    try {
+        environment_folder = tl.getInput('environmentFolder', true);
+        if (!(environment_folder.endsWith("\\") || environment_folder.endsWith("/"))) {
+            environment_folder = environment_folder + "\\";
+        }
+    }
+    catch (ex) {
+        validInputs = false;
+        tl.error("There was an error setting the value of the environment folder input");
+    }
 }
 ///Run function to handle the async running process of the task
 function Run() {
@@ -49,22 +70,27 @@ function Run() {
                     fileContent = "";
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 5, , 6]);
-                    if (!validInputs) return [3 /*break*/, 3];
+                    _a.trys.push([1, 7, , 8]);
+                    if (!validInputs) return [3 /*break*/, 5];
                     return [4 /*yield*/, processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation)];
                 case 2:
                     success = _a.sent();
-                    return [3 /*break*/, 4];
+                    if (!get_environments) return [3 /*break*/, 4];
+                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder)];
                 case 3:
-                    tl.setResult(tl.TaskResult.Failed, "Invalid Inputs");
+                    success = _a.sent();
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
+                    tl.setResult(tl.TaskResult.Failed, "Invalid Inputs");
+                    _a.label = 6;
+                case 6: return [3 /*break*/, 8];
+                case 7:
                     err_1 = _a.sent();
                     tl.error(err_1);
                     tl.setResult(tl.TaskResult.Failed, "Retrieving Files from Postman failed");
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
