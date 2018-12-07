@@ -3,7 +3,7 @@ import * as processPostman from './processPostman';
  
 var postman_collection_url:string = "https://api.getpostman.com/collections/";
 
-var postman_header_apiKey:string = "253485c02dcf4b7ab628af0e9f6e337e";
+var postman_header_apiKey:string = "api key";
 var postman_environment_url:string = "https://api.getpostman.com/environments/";
 
 
