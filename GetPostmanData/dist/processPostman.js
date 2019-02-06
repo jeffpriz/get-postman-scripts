@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var tl = require("azure-pipelines-task-lib");
 var FSData = require("./handleFSData");
 var httprequest = require("request-promise-native");
-function callPostman(apiEndpoint, headerApiKey) {
+function callPostman(apiEndpoint, headerApiKey, apiPause) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
@@ -12,7 +12,9 @@ function callPostman(apiEndpoint, headerApiKey) {
                     var reqOption, result, e_1;
                     return tslib_1.__generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0:
+                            case 0: return [4 /*yield*/, delay(apiPause)];
+                            case 1:
+                                _a.sent();
                                 reqOption = {
                                     method: 'GET',
                                     uri: apiEndpoint,
@@ -25,22 +27,22 @@ function callPostman(apiEndpoint, headerApiKey) {
                                     json: true
                                 };
                                 tl.debug("Options passed to request: " + JSON.stringify(reqOption));
-                                _a.label = 1;
-                            case 1:
-                                _a.trys.push([1, 3, , 4]);
+                                _a.label = 2;
+                            case 2:
+                                _a.trys.push([2, 4, , 5]);
                                 tl.debug("calling " + apiEndpoint);
                                 return [4 /*yield*/, httprequest(reqOption)];
-                            case 2:
+                            case 3:
                                 result = _a.sent();
                                 tl.debug("Result status: " + result.statusCode);
                                 resolve(result);
-                                return [3 /*break*/, 4];
-                            case 3:
+                                return [3 /*break*/, 5];
+                            case 4:
                                 e_1 = _a.sent();
-                                tl.debug("error calling Postman: " + e_1.toString());
+                                tl.warning("Error while calling Postman: " + e_1.toString());
                                 reject(e_1);
-                                return [3 /*break*/, 4];
-                            case 4: return [2 /*return*/];
+                                return [3 /*break*/, 5];
+                            case 5: return [2 /*return*/];
                         }
                     });
                 }); })];
@@ -48,7 +50,14 @@ function callPostman(apiEndpoint, headerApiKey) {
     });
 }
 exports.callPostman = callPostman;
-function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSaveLocation) {
+function delay(ms) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return tslib_1.__generator(this, function (_a) {
+            return [2 /*return*/, new Promise(function (resolve) { return setTimeout(resolve, ms); })];
+        });
+    });
+}
+function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSaveLocation, apiPause) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
@@ -68,7 +77,7 @@ function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSa
                                 _d.label = 2;
                             case 2:
                                 _d.trys.push([2, 5, , 6]);
-                                return [4 /*yield*/, callPostman(apiEndpoint + thisCollection.uid.toString(), headerApiKey)];
+                                return [4 /*yield*/, callPostman(apiEndpoint + thisCollection.uid.toString(), headerApiKey, apiPause)];
                             case 3:
                                 thisCollectionJSON = _d.sent();
                                 return [4 /*yield*/, FSData.SaveFile(fileSaveLocation + thisCollection.name + ".json", JSON.stringify(thisCollectionJSON))];
@@ -104,7 +113,7 @@ function ProcessAllCollections(collectionList, apiEndpoint, headerApiKey, fileSa
     });
 }
 exports.ProcessAllCollections = ProcessAllCollections;
-function RunPostmanCollectionGet(apiEndpoint, headerApiKey, fileSaveLocation) {
+function RunPostmanCollectionGet(apiEndpoint, headerApiKey, fileSaveLocation, apiPause) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
@@ -114,14 +123,14 @@ function RunPostmanCollectionGet(apiEndpoint, headerApiKey, fileSaveLocation) {
                         switch (_a.label) {
                             case 0:
                                 _a.trys.push([0, 6, , 7]);
-                                return [4 /*yield*/, callPostman(apiEndpoint, headerApiKey)];
+                                return [4 /*yield*/, callPostman(apiEndpoint, headerApiKey, apiPause)];
                             case 1:
                                 collections = _a.sent();
                                 tl.debug("There were " + collections.collections.length.toString() + " collections found in Postman");
                                 return [4 /*yield*/, FSData.SaveFile(fileSaveLocation + "collectionlist.json", JSON.stringify(collections))];
                             case 2:
                                 if (!_a.sent()) return [3 /*break*/, 4];
-                                return [4 /*yield*/, ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation)];
+                                return [4 /*yield*/, ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation, apiPause)];
                             case 3:
                                 _a.sent();
                                 return [3 /*break*/, 5];
@@ -143,7 +152,7 @@ function RunPostmanCollectionGet(apiEndpoint, headerApiKey, fileSaveLocation) {
     });
 }
 exports.RunPostmanCollectionGet = RunPostmanCollectionGet;
-function RunPostmanEnvironmentGet(apiEndpoint, headerApiKey, fileSaveLocation) {
+function RunPostmanEnvironmentGet(apiEndpoint, headerApiKey, fileSaveLocation, apiPause) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
@@ -153,7 +162,7 @@ function RunPostmanEnvironmentGet(apiEndpoint, headerApiKey, fileSaveLocation) {
                         switch (_a.label) {
                             case 0:
                                 _a.trys.push([0, 10, , 11]);
-                                return [4 /*yield*/, callPostman(apiEndpoint, headerApiKey)];
+                                return [4 /*yield*/, callPostman(apiEndpoint, headerApiKey, apiPause)];
                             case 1:
                                 environments = _a.sent();
                                 _a.label = 2;
@@ -170,7 +179,7 @@ function RunPostmanEnvironmentGet(apiEndpoint, headerApiKey, fileSaveLocation) {
                             case 5: return [4 /*yield*/, FSData.SaveFile(fileSaveLocation + "environments.json", JSON.stringify(environments))];
                             case 6:
                                 if (!_a.sent()) return [3 /*break*/, 8];
-                                return [4 /*yield*/, ProcessAllEnvironments(environments, apiEndpoint, headerApiKey, fileSaveLocation)];
+                                return [4 /*yield*/, ProcessAllEnvironments(environments, apiEndpoint, headerApiKey, fileSaveLocation, apiPause)];
                             case 7:
                                 _a.sent();
                                 return [3 /*break*/, 9];
@@ -192,7 +201,7 @@ function RunPostmanEnvironmentGet(apiEndpoint, headerApiKey, fileSaveLocation) {
     });
 }
 exports.RunPostmanEnvironmentGet = RunPostmanEnvironmentGet;
-function ProcessAllEnvironments(environmentList, apiEndpoint, headerApiKey, fileSaveLocation) {
+function ProcessAllEnvironments(environmentList, apiEndpoint, headerApiKey, fileSaveLocation, apiPause) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _this = this;
         return tslib_1.__generator(this, function (_a) {
@@ -212,7 +221,7 @@ function ProcessAllEnvironments(environmentList, apiEndpoint, headerApiKey, file
                                 _d.label = 2;
                             case 2:
                                 _d.trys.push([2, 5, , 6]);
-                                return [4 /*yield*/, callPostman(apiEndpoint + thisEnvironment.uid.toString(), headerApiKey)];
+                                return [4 /*yield*/, callPostman(apiEndpoint + thisEnvironment.uid.toString(), headerApiKey, apiPause)];
                             case 3:
                                 thisEnvironmentJSON = _d.sent();
                                 return [4 /*yield*/, FSData.SaveFile(fileSaveLocation + thisEnvironment.name + ".json", JSON.stringify(thisEnvironmentJSON))];

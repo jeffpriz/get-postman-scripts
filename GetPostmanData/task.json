@@ -42,7 +42,16 @@
             "helpMarkDown": "The API credential key used to perform the call to Postman.",
             "defaultValue": ""
         },
-        
+        {
+            "name": "pauseDuration",
+            "type": "string",
+            "label": "API Pause Duration (in ms)",
+            "required": true, 
+            "defaultValue":"100",
+                 
+            "helpMarkDown": "Pause between API calls to Postman, may be needed to avoid 60 calls/min rate limit from Postman"
+            
+        },
         {
             "name": "downloadEnvironments",
             "type": "boolean",
@@ -62,6 +71,7 @@
             "helpMarkDown": "Folder path where the Environment files should be saved (relative to the root where files are downloaded)."
             
         }
+
     ],
     "execution": {
       "Node": {

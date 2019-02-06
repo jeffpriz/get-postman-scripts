@@ -4,11 +4,12 @@ import * as FSData from './handleFSData';
 import * as httprequest from 'request-promise-native';
 import { resolveSrv } from 'dns';
 
-export async function callPostman(apiEndpoint:string, headerApiKey:string):Promise<any>
+export async function callPostman(apiEndpoint:string, headerApiKey:string, apiPause:number):Promise<any>
 {
 
     return new Promise<any>(async (resolve, reject) => { 
         
+        await delay(apiPause)
         var reqOption = {
             method:'GET',
             uri:apiEndpoint,
@@ -31,7 +32,7 @@ export async function callPostman(apiEndpoint:string, headerApiKey:string):Promi
         }
         catch(e)
         {
-            tl.debug("error calling Postman: " + e.toString())        
+            tl.warning("Error while calling Postman: " + e.toString())        
             reject(e);
         }
     });
@@ -39,16 +40,21 @@ export async function callPostman(apiEndpoint:string, headerApiKey:string):Promi
 
 }
 
+async function delay(ms:number) {
+    
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-export async function ProcessAllCollections(collectionList:any, apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+export async function ProcessAllCollections(collectionList:any, apiEndpoint:string, headerApiKey:string, fileSaveLocation:string, apiPause:number):Promise<boolean>
 {
     return new Promise<boolean>(async (resolve, reject) => { 
         for (let thisCollection of collectionList.collections) 
         {
+            
             console.log("attempting to call Postman API for collection..");
             console.log(thisCollection.name + " - " + thisCollection.uid.toString()) ;
             try {
-            var thisCollectionJSON = await callPostman(apiEndpoint + thisCollection.uid.toString(), headerApiKey);
+            var thisCollectionJSON = await callPostman(apiEndpoint + thisCollection.uid.toString(), headerApiKey, apiPause);
             
             await FSData.SaveFile( fileSaveLocation + thisCollection.name + ".json", JSON.stringify(thisCollectionJSON));
             resolve(true);
@@ -66,16 +72,16 @@ export async function ProcessAllCollections(collectionList:any, apiEndpoint:stri
 
 }
 
-export async function RunPostmanCollectionGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+export async function RunPostmanCollectionGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string, apiPause:number):Promise<boolean>
 {
     return new Promise<boolean>(async (resolve, reject) => { 
         try
         {
-            var collections:any = await callPostman(apiEndpoint, headerApiKey);
+            var collections:any = await callPostman(apiEndpoint, headerApiKey, apiPause);
             tl.debug("There were " + collections.collections.length.toString() + " collections found in Postman");
             if (await FSData.SaveFile( fileSaveLocation +"collectionlist.json", JSON.stringify(collections)))
             {
-                await ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation);
+                await ProcessAllCollections(collections, apiEndpoint, headerApiKey, fileSaveLocation, apiPause);
             }
             else
             {
@@ -96,12 +102,12 @@ export async function RunPostmanCollectionGet(apiEndpoint:string, headerApiKey:s
 
 
 
-export async function RunPostmanEnvironmentGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+export async function RunPostmanEnvironmentGet(apiEndpoint:string, headerApiKey:string, fileSaveLocation:string, apiPause:number):Promise<boolean>
 {
     return new Promise<boolean>(async (resolve, reject) => { 
         try 
         {
-            var environments:any = await callPostman(apiEndpoint, headerApiKey);
+            var environments:any = await callPostman(apiEndpoint, headerApiKey, apiPause);
         // tl.debug("There were " + environments.collections.length.toString() + " collections found in Postman");
             
             try
@@ -114,7 +120,7 @@ export async function RunPostmanEnvironmentGet(apiEndpoint:string, headerApiKey:
             if (await FSData.SaveFile( fileSaveLocation +"environments.json", JSON.stringify(environments)))
             {
                 
-              await ProcessAllEnvironments(environments, apiEndpoint, headerApiKey, fileSaveLocation);
+              await ProcessAllEnvironments(environments, apiEndpoint, headerApiKey, fileSaveLocation, apiPause);
             }
             else
             {
@@ -130,7 +136,7 @@ export async function RunPostmanEnvironmentGet(apiEndpoint:string, headerApiKey:
 }
 
 
-export async function ProcessAllEnvironments(environmentList:any, apiEndpoint:string, headerApiKey:string, fileSaveLocation:string):Promise<boolean>
+export async function ProcessAllEnvironments(environmentList:any, apiEndpoint:string, headerApiKey:string, fileSaveLocation:string, apiPause:number):Promise<boolean>
 {
     return new Promise<boolean>(async (resolve, reject) => { 
         for (let thisEnvironment of environmentList.environments) 
@@ -138,7 +144,7 @@ export async function ProcessAllEnvironments(environmentList:any, apiEndpoint:st
             console.log("attempting to call Postman API for environment..");
             console.log(thisEnvironment.name + " - " + thisEnvironment.uid.toString()) ;
             try {
-            var thisEnvironmentJSON = await callPostman(apiEndpoint + thisEnvironment.uid.toString(), headerApiKey);
+            var thisEnvironmentJSON = await callPostman(apiEndpoint + thisEnvironment.uid.toString(), headerApiKey, apiPause);
             
             await FSData.SaveFile( fileSaveLocation + thisEnvironment.name + ".json", JSON.stringify(thisEnvironmentJSON));
             resolve(true);

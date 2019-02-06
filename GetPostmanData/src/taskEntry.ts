@@ -13,6 +13,7 @@ var postman_header_apiKey:string = "";
 var get_environments:boolean = false;
 var environment_folder:string="";
 var fileSaveLocation:string = "";
+var apiPause:number = 100;
 //=----------------------------------------------------------
 //=  Validate that the inputs were provided as expected
 //=----------------------------------------------------------
@@ -79,6 +80,20 @@ function validateInputs()
         
     }
 
+        
+    try
+    {
+        apiPause = parseInt(tl.getInput('pauseDuration', true));
+        
+    }
+    catch(ex)
+    {
+        validInputs = false;
+        tl.warning("the Pause duration was not valid or could not be found, defaulting pause to 100ms");
+        
+        
+    }
+
 }
 
 
@@ -97,10 +112,10 @@ async function Run()
         if(validInputs)
         {
             
-            var success:boolean = await processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation);            
+            var success:boolean = await processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation, apiPause);            
             if(get_environments)
             {
-                success = await processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder);
+                success = await processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder, apiPause);
             }
         }
         else

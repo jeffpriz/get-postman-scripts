@@ -13,6 +13,7 @@ var postman_header_apiKey = "";
 var get_environments = false;
 var environment_folder = "";
 var fileSaveLocation = "";
+var apiPause = 100;
 //=----------------------------------------------------------
 //=  Validate that the inputs were provided as expected
 //=----------------------------------------------------------
@@ -56,6 +57,13 @@ function validateInputs() {
         validInputs = false;
         tl.error("There was an error setting the value of the environment folder input");
     }
+    try {
+        apiPause = parseInt(tl.getInput('pauseDuration', true));
+    }
+    catch (ex) {
+        validInputs = false;
+        tl.warning("the Pause duration was not valid or could not be found, defaulting pause to 100ms");
+    }
 }
 ///Run function to handle the async running process of the task
 function Run() {
@@ -72,11 +80,11 @@ function Run() {
                 case 1:
                     _a.trys.push([1, 7, , 8]);
                     if (!validInputs) return [3 /*break*/, 5];
-                    return [4 /*yield*/, processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation)];
+                    return [4 /*yield*/, processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation, apiPause)];
                 case 2:
                     success = _a.sent();
                     if (!get_environments) return [3 /*break*/, 4];
-                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder)];
+                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder, apiPause)];
                 case 3:
                     success = _a.sent();
                     _a.label = 4;

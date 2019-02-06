@@ -3,7 +3,7 @@ import * as processPostman from './processPostman';
  
 var postman_collection_url:string = "https://api.getpostman.com/collections/";
 
-var postman_header_apiKey:string = "api key";
+var postman_header_apiKey:string = "api key here";
 var postman_environment_url:string = "https://api.getpostman.com/environments/";
 
 
@@ -18,8 +18,8 @@ async function Run()
     {
         var fileSaveLocation:string = "c:\\temp\\";
         var environment_folder:string="environments\\";
-        var success:boolean = await processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation);
-        success = await processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder);
+        var success:boolean = await processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation, 4000);
+        success = await processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder,4000);
 
     }
     catch(err)

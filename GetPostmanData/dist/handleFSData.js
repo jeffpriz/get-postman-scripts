@@ -77,14 +77,19 @@ function MakeDirectory(dirname) {
                             case 1:
                                 _a.trys.push([1, 3, , 4]);
                                 return [4 /*yield*/, gfs.mkdir(dirname, function (err) {
-                                        if (err.code != "EEXIST") {
-                                            console.log(err);
-                                            reject(err);
+                                        if (err != null) {
+                                            if (err.code != "EEXIST") {
+                                                console.log(err);
+                                                reject(err);
+                                            }
+                                            else {
+                                                console.log("directory created or available");
+                                            }
+                                            resolve(success);
                                         }
                                         else {
-                                            console.log("directory created or available");
+                                            resolve(success);
                                         }
-                                        resolve(success);
                                     })];
                             case 2:
                                 _a.sent();
