@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "getPostmanJSON",
     "name": "Get Postman Scripts",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "OneLuckiDev",
     "targets": [
         {
