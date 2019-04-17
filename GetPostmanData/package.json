@@ -28,11 +28,12 @@
     "config/"
   ],
   "dependencies": {
-    "azure-pipelines-task-lib": "2.7.0",
+    "uuid":"^3.3.2",
+    "azure-pipelines-task-lib":"^2.8.0",
     "reflect-metadata": "^0.1.10",
     "tslib": "~1.9.3",
     "node-fetch": "2.0.0",
-    "graceful-fs": "^4.1.11",
+    "graceful-fs":"^4.1.15",
     "parse-json": "^4.0.0",
     "request": "2.87.0",
     "request-promise-native": "^1.0.5"

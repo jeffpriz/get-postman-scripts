@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var processPostman = require("./processPostman");
 var FSData = require("./handleFSData");
 var postman_collection_url = "https://api.getpostman.com/collections/";
-var postman_header_apiKey = "253485c02dcf4b7ab628af0e9f6e337e";
+var postman_header_apiKey = "Api Key Here";
 var postman_environment_url = "https://api.getpostman.com/environments/";
 var input_fileName = "testJsonData.json";
 function Run() {
