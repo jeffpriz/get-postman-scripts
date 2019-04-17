@@ -48,6 +48,7 @@ function validateInputs() {
                 case 3:
                     ex_1 = _a.sent();
                     validInputs = false;
+                    tl.warning(ex_1);
                     tl.error("There was an error setting the value of the fileLocation input");
                     return [3 /*break*/, 4];
                 case 4:
