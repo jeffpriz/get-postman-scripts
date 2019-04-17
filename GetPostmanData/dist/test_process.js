@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var processPostman = require("./processPostman");
+var FSData = require("./handleFSData");
 var postman_collection_url = "https://api.getpostman.com/collections/";
-var postman_header_apiKey = "api key here";
+var postman_header_apiKey = "253485c02dcf4b7ab628af0e9f6e337e";
 var postman_environment_url = "https://api.getpostman.com/environments/";
 var input_fileName = "testJsonData.json";
 function Run() {
@@ -17,21 +18,24 @@ function Run() {
                     fileContent = "";
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 4, , 5]);
-                    fileSaveLocation = "c:\\temp\\";
+                    _a.trys.push([1, 5, , 6]);
+                    fileSaveLocation = "c:\\temp\\nofolderexists\\";
+                    return [4 /*yield*/, FSData.MakeDirectory(fileSaveLocation)];
+                case 2:
+                    _a.sent();
                     environment_folder = "environments\\";
                     return [4 /*yield*/, processPostman.RunPostmanCollectionGet(postman_collection_url, postman_header_apiKey, fileSaveLocation, 4000)];
-                case 2:
-                    success = _a.sent();
-                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder, 4000)];
                 case 3:
                     success = _a.sent();
-                    return [3 /*break*/, 5];
+                    return [4 /*yield*/, processPostman.RunPostmanEnvironmentGet(postman_environment_url, postman_header_apiKey, fileSaveLocation + environment_folder, 4000)];
                 case 4:
+                    success = _a.sent();
+                    return [3 /*break*/, 6];
+                case 5:
                     err_1 = _a.sent();
                     console.log(err_1);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     });

@@ -1,5 +1,5 @@
 import * as tl from 'azure-pipelines-task-lib';
-
+import * as FSData from './handleFSData';
 import * as processPostman from './processPostman';
 
 var validInputs:boolean = false;
@@ -17,7 +17,7 @@ var apiPause:number = 100;
 //=----------------------------------------------------------
 //=  Validate that the inputs were provided as expected
 //=----------------------------------------------------------
-function validateInputs()
+async function validateInputs()
 {
     //File name input
     tl.debug("validating inputs...");
@@ -43,11 +43,14 @@ function validateInputs()
         {
             fileSaveLocation = fileSaveLocation + "\\";
         }
+        await FSData.MakeDirectory(fileSaveLocation);
     }
     catch(ex)
     {
         validInputs = false;
+        tl.warning(ex);
         tl.error("There was an error setting the value of the fileLocation input");
+
         
     }
 
@@ -103,8 +106,10 @@ function validateInputs()
 async function Run()
 {
     tl.debug("Running task");
-    validateInputs();
     validInputs = true;
+    
+    await validateInputs();
+ 
 
     var fileContent:string = "";
     try{
